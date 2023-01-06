@@ -4,10 +4,8 @@
 #include <mutex>
 #include <cstdint>
 #include <chrono>
-#include <string>
 #include <iomanip>
 #include <sstream>
-#include <future>
 
 #define NOF_LOOPS 100000000
 
@@ -47,7 +45,7 @@ void atomic_worker(int cpuid) {
     uint64_t loops;
 
     timer.start();
-    for (loops=0; loops<=NOF_LOOPS; loops++) {
+    for (loops=0; loops<NOF_LOOPS; loops++) {
         atm_shared_ctr++;
     }
     cout << "atomic worker: " << timer.elapsed_in_string() << endl;
@@ -58,7 +56,7 @@ void builtin_worker(int cpuid) {
     uint64_t loops;
 
     timer.start();
-    for (loops=0; loops<=NOF_LOOPS; loops++) {
+    for (loops=0; loops<NOF_LOOPS; loops++) {
         __sync_fetch_and_add(&plain_shared_cntr, 1);
     }
     cout << "builtin worker: " << timer.elapsed_in_string() << endl;
@@ -69,7 +67,7 @@ void mutex_worker(int cpuid) {
     uint64_t loops;
 
     timer.start();
-    for (loops=0; loops<=NOF_LOOPS; loops++) {
+    for (loops=0; loops<NOF_LOOPS; loops++) {
         mtx.lock();
         plain_shared_cntr++;
         mtx.unlock();
